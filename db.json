@@ -1,0 +1,57 @@
+{
+  "users": [
+    {
+      "id": "1",
+      "email": "user1@gmail.com",
+      "password": "123456Nn",
+      "createdAt": 1700313547023
+    },
+    {
+      "id": "b569",
+      "email": "zhigarevichnadya@gmail.com",
+      "password": "12345678Nn",
+      "createdAt": 1732333895359
+    },
+    {
+      "id": "ffb4",
+      "email": "a@gmail.com",
+      "password": "123456Nn",
+      "createdAt": 1732335507745
+    },
+    {
+      "id": "84d5",
+      "email": "hdhsg@gmail.com",
+      "password": "222333nnnM",
+      "createdAt": 1732350431538
+    },
+    {
+      "id": "69e7",
+      "email": "zz@gmail.com",
+      "password": "555666nnnN",
+      "createdAt": 1732350536145
+    }
+  ],
+  "notes": [
+    {
+      "id": "1",
+      "authorId": "b569",
+      "title": "Первая зам",
+      "body": "Тело первой заметки",
+      "createdAt": 1700313547024
+    },
+    {
+      "id": "7791",
+      "authorId": "b569",
+      "title": "4444",
+      "body": "ccc",
+      "createdAt": 1732347661919
+    },
+    {
+      "id": "f8ae",
+      "authorId": "b569",
+      "title": "ччччч",
+      "body": "",
+      "createdAt": 1732349352278
+    }
+  ]
+}
