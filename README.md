@@ -7,7 +7,7 @@ This project allows you to create, edit and store notes.
 To run this project, follow these steps:
 
 1. Clone the repository.
-2. Build and run the project using docker-compose.
+2. Build and run the project.
 
 ## Main Web API Functionality
 
