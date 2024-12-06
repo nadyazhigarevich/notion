@@ -8,8 +8,8 @@ import UserContextProvider from './components/UserContextProvider';
 import RequireAuth from './components/RequireAuth';
 import NotFound from './pages/NotFound';
 import Notes from './pages/Notes';
-import CreateNotePage from './pages/CreatePage'; // Импорт страницы создания заметки
-import EditNotePage from './pages/EditPage'; // Импорт страницы редактирования заметки
+import CreateNotePage from './pages/CreatePage'; 
+import EditNotePage from './pages/EditPage'; 
 import NotePage from './pages/Note';
 
 const router = createBrowserRouter([
@@ -18,7 +18,7 @@ const router = createBrowserRouter([
     element: <Layout />,
     children: [
       {
-        path: '/', // Главная страница по адресу /
+        path: '/',
         element: (
           <RequireAuth>
             <Home />
@@ -26,7 +26,7 @@ const router = createBrowserRouter([
         ),
       },
       {
-        path: '/notes', // Страница со списком заметок
+        path: '/notes', 
         element: (
           <RequireAuth>
             <Notes />
@@ -34,7 +34,7 @@ const router = createBrowserRouter([
         ),
       },
       {
-        path: '/create-note', // Страница создания новой заметки
+        path: '/create-note',
         element: (
           <RequireAuth>
             <CreateNotePage />
@@ -42,7 +42,7 @@ const router = createBrowserRouter([
         ),
       },
       {
-        path: '/edit-note/:id', // Страница редактирования заметки
+        path: '/edit-note/:id', 
         element: (
           <RequireAuth>
             <EditNotePage />
@@ -50,7 +50,7 @@ const router = createBrowserRouter([
         ),
       },
       {
-        path: '/note/:id', // Страница редактирования заметки
+        path: '/note/:id', 
         element: (
           <RequireAuth>
             <NotePage />

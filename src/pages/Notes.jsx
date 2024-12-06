@@ -1,58 +1,54 @@
-import React, { useContext, useEffect, useState } from 'react'
-import { UserContext } from '../components/UserContextProvider'
-import { Link, useNavigate } from 'react-router-dom'
-import { formatDate } from '../utils/formatDate'
+import React, { useContext, useEffect, useState } from 'react';
+import { UserContext } from '../components/UserContextProvider';
+import { Link, useNavigate } from 'react-router-dom';
+import { formatDate } from '../utils/formatDate';
+import { noteApi } from '../api/noteApi';
 
 export default function NotesPage() {
-    const { user } = useContext(UserContext)
-    const [notes, setNotes] = useState([])
-    const [loading, setLoading] = useState(true)
-    const navigate = useNavigate()
+    const { user } = useContext(UserContext);
+    const [notes, setNotes] = useState([]);
+    const [loading, setLoading] = useState(true);
+    const [errors, setErrors] = useState({});
+    const navigate = useNavigate();
 
     useEffect(() => {
         if (user?.id) {
-            fetch(`http://localhost:3000/notes?authorId=${user.id}`)
-                .then((response) => {
-                    if (!response.ok) {
-                        throw new Error('Network response was not ok')
-                    }
-                    return response.json()
-                })
+            noteApi.findByAuthor(user.id)
                 .then((data) => {
-                    const sortedNotes = data.sort((a, b) => b.createdAt - a.createdAt)
-                    setNotes(sortedNotes)
+                    const sortedNotes = data.sort((a, b) => b.createdAt - a.createdAt);
+                    setNotes(sortedNotes);
                 })
                 .catch((error) => {
-                    console.error('Fetch error:', error)
+                    console.error('Fetch error:', error);
+                    setErrors({ server: 'Server error. Please try again later.' });
                 })
                 .finally(() => {
-                    setLoading(false)
-                })
+                    setLoading(false);
+                });
         }
-    }, [user])
+    }, [user]);
 
     const handleDelete = (noteId) => {
-        fetch(`http://localhost:3000/notes/${noteId}`, {
-            method: 'DELETE',
-        })
+       noteApi.delete(noteId)
             .then(() => {
-                setNotes((prevNotes) => prevNotes.filter(note => note.id !== noteId))
+                setNotes((prevNotes) => prevNotes.filter(note => note.id !== noteId));
             })
             .catch((error) => {
-                console.error('Delete error:', error)
-            })
-    }
+                console.error('Delete error:', error);
+                setErrors({ server: 'Server error. Please try again later.' });
+            });
+    };
 
     const handleCreateNote = () => {
-        navigate('/create-note')
-    }
+        navigate('/create-note');
+    };
 
     const handleNoteClick = (noteId) => {
-        navigate(`/note/${noteId}`)
-    }
+        navigate(`/note/${noteId}`);
+    };
 
     if (loading) {
-        return <div className="text-center">Loading...</div>
+        return <div className="text-center">Loading...</div>;
     }
 
     return (
@@ -60,6 +56,7 @@ export default function NotesPage() {
             <div className="bg-white shadow-md rounded-lg p-8 w-full">
                 <article className="prose prose-slate prose-sm lg:prose-base">
                     <h1 className="font-bold">My Notes</h1>
+                    {errors.server && <p className="text-red-500 text-xs italic">{errors.server}</p>}
                     <button
                         onClick={handleCreateNote}
                         className="bg-blue-500 hover:bg-blue-700 text-center mt-4 text-white w-2/5 font-bold py-2 px-4 rounded inline-block"
@@ -91,5 +88,5 @@ export default function NotesPage() {
                 </article>
             </div>
         </div>
-    )
+    );
 }

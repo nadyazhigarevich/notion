@@ -1,48 +1,41 @@
-import React, { useState, useContext } from 'react'
-import { useNavigate } from 'react-router-dom'
-import { UserContext } from '../components/UserContextProvider'
-import NoteForm from '../components/NoteForm'
+import React, { useState, useContext } from 'react';
+import { useNavigate } from 'react-router-dom';
+import { UserContext } from '../components/UserContextProvider';
+import NoteForm from '../components/NoteForm';
+import { noteApi } from '../api/noteApi';
 
 const CreateNotePage = () => {
-    const { user } = useContext(UserContext)
-    const [title, setTitle] = useState('')
-    const [body, setBody] = useState('')
-    const [errors, setErrors] = useState({})
-    const navigate = useNavigate()
+    const { user } = useContext(UserContext);
+    const [title, setTitle] = useState('');
+    const [body, setBody] = useState('');
+    const [errors, setErrors] = useState({});
+    const navigate = useNavigate();
 
-    const handleSubmit = (e) => {
-        e.preventDefault()
-        const validationErrors = {}
+    const handleSubmit = async (e) => {
+        e.preventDefault();
 
-        if (!title.trim()) {
-            validationErrors.title = 'The note title cannot be empty'
-        }
-
+        const validationErrors = validateForm(title);
         if (Object.keys(validationErrors).length > 0) {
-            setErrors(validationErrors)
-            return
+            setErrors(validationErrors);
+            return;
         }
 
-        fetch('http://localhost:3000/notes', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-            },
-            body: JSON.stringify({
-                authorId: user.id,
-                title,
-                body,
-                createdAt: Date.now(),
-            }),
-        })
-            .then((response) => response.json())
-            .then((data) => {
-                navigate(`/note/${data.id}`)
-            })
-            .catch((error) => {
-                console.error('Error creating note:', error)
-            })
-    }
+        try {
+            const data = await noteApi.create(user.id, title, body);
+            navigate(`/note/${data.id}`);
+        } catch (error) {
+            console.error('Error creating note:', error);
+            setErrors({ submit: 'Failed to create note. Please try again later.' });
+        }
+    };
+
+    const validateForm = (title) => {
+        const errors = {};
+        if (!title.trim()) {
+            errors.title = 'The note title cannot be empty';
+        }
+        return errors;
+    };
 
     return (
         <div className="flex items-center justify-center bg-white w-3/5">
@@ -61,7 +54,7 @@ const CreateNotePage = () => {
                 </article>
             </div>
         </div>
-    )
-}
+    );
+};
 
-export default CreateNotePage
+export default CreateNotePage;
